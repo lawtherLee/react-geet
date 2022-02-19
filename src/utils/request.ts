@@ -1,3 +1,4 @@
+import { hasToken, getToken } from './storage'
 // 封装axios
 import axios, { AxiosError } from 'axios'
 import { Toast } from 'antd-mobile'
@@ -11,6 +12,9 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    if (hasToken()) {
+      config.headers!.Authorization = 'Bearer ' + getToken().token
+    }
     return config
   },
   function (error) {

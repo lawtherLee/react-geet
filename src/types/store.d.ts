@@ -1,3 +1,4 @@
+import { User, UserProfile } from '@/types/data'
 import store from '@/store'
 import { ThunkAction } from 'redux-thunk'
 import { Token } from './data'
@@ -10,8 +11,19 @@ type LoginAction = {
   payload: Token
 }
 
-type RootAction = LoginAction
+// 个人中心的action类型
+type ProfileAction =
+  | {
+      type: 'profile/getUser'
+      payload: User
+    }
+  | {
+      type: 'profile/getUserProfile'
+      payload: UserProfile
+    }
+type RootAction = LoginAction | ProfileAction
 
 type RootState = ReturnType<typeof store.getState>
+// 给每个action函数中如果操作异步指定的类型
 type RootThunkAction = ThunkAction<void, RootState, unknown, RootAction>
-export { RootState, RootThunkAction, LoginAction }
+export { RootState, RootThunkAction, LoginAction, ProfileAction }
