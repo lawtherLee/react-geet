@@ -1,3 +1,4 @@
+import { SearchResult } from '@/pages/Search/Result'
 import { Article } from './data.d'
 import { Channel, User, UserProfile } from '@/types/data'
 import store from '@/store'
@@ -60,10 +61,22 @@ type HomeAction =
         articleList: Article[]
       }
     }
-type SearchAction = {
-  type: 'search/getSuggestion'
-  payload: Suggestion
-}
+type SearchAction =
+  | {
+      type: 'search/getSuggestion'
+      payload: Suggestion
+    }
+  | {
+      type: 'search/saveHistory'
+      payload: string
+    }
+  | {
+      type: 'search/clearHistory'
+    }
+  | {
+      type: 'search/getSearchResults'
+      payload: SearchResult[]
+    }
 type RootAction = LoginAction | ProfileAction | HomeAction | SearchAction
 
 type RootState = ReturnType<typeof store.getState>

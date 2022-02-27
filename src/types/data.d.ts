@@ -52,6 +52,21 @@ export type Article = {
 }
 
 export type Suggestion = string[]
+export type History = string[]
+
+export type SearchResults = {
+  art_id: string
+  aut_id: string
+  aut_name: string
+  collect_count: number
+  comm_count: number
+  cover: {
+    type: number
+  }
+  like_count: number
+  pubdate: string
+  title: string
+}
 
 type ApiResponse<T> = AxiosResponse<T>
 

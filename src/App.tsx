@@ -7,6 +7,7 @@ import ProfileEdit from '@/pages/Edit'
 import Chat from '@/pages/Chat'
 import Article from '@/pages/Article'
 import Search from '@/pages/Search'
+import SearchResult from '@/pages/Search/Result'
 import PrivattRoute from './components/PrivateRoute'
 import history from './utils/history'
 // import { useCountDown } from '@/utils/hooks'
@@ -21,7 +22,8 @@ const App = () => {
           <Route path="/login" component={Login} />
           <Route path="/home" component={Layout} />
           <Route path="/article/:id" component={Article} />
-          <Route path="/search" component={Search} />
+          <Route path="/search" exact component={Search} />
+          <Route path="/search/result" component={SearchResult} />
           {/* <Route path="/profile/edit" component={ProfileEdit} /> */}
           <PrivattRoute path="/profile/edit">
             <ProfileEdit />
