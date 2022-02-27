@@ -1,7 +1,7 @@
-import { setToken } from './../../utils/storage'
-import { LoginFormValues } from '@/types/data'
+import { setToken, removeToken } from './../../utils/storage'
+import { LoginFormValues, Token } from '@/types/data'
 import { getCodeApi, loginApi } from '@/api/user'
-import { RootThunkAction } from '@/types/store'
+import { LoginAction, RootThunkAction } from '@/types/store'
 
 // 创建login的action的函数 并且是异步的
 export const login = (values: LoginFormValues): RootThunkAction => {
@@ -21,5 +21,20 @@ export const getCode = (mobile: string) => {
   return async () => {
     console.log('发送验证码', mobile)
     await getCodeApi(mobile)
+  }
+}
+
+export const logout = (): LoginAction => {
+  removeToken()
+  return {
+    type: 'logout/logout',
+  }
+}
+
+export const updateToken = (payload: Token): LoginAction => {
+  setToken(payload)
+  return {
+    type: 'login/updatetoken',
+    payload,
   }
 }

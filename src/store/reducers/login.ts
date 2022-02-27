@@ -7,5 +7,15 @@ export const login = (state = initialState, action: LoginAction) => {
   if (action.type === 'login/login') {
     return action.payload
   }
+
+  if (action.type === 'logout/logout') {
+    return {
+      token: '',
+      refresh_token: '',
+    }
+  }
+  if (action.type === 'login/updatetoken') {
+    return action.payload
+  }
   return state
 }

@@ -17,3 +17,9 @@ export const getUserApi = () => {
 export const getUserProfileApi = () => {
   return request.get<AxiosResponse<UserProfile>>('/user/profile')
 }
+
+export const updateUserProfileApi = (key: string, value: string) => {
+  return request.patch('/user/profile', {
+    [key]: value,
+  })
+}

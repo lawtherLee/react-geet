@@ -1,6 +1,6 @@
 import { LoginFormValues } from '@/types/data'
 import { NavBar, Form, Input, Button, Toast } from 'antd-mobile'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import styles from './index.module.scss'
 import { useDispatch } from 'react-redux'
 import { getCode, login } from '@/store/actions/login'
@@ -9,13 +9,16 @@ import { InputRef } from 'antd-mobile/es/components/input'
 const Login = () => {
   const history = useHistory()
   const dispatch = useDispatch()
-
+  const location = useLocation<{ from: string }>()
   // 提交表单
   const onFinish = async (values: LoginFormValues) => {
     await dispatch(login(values))
     Toast.show({
       content: '登录成功',
       afterClose: () => {
+        if (location.state) {
+          return history.replace(location.state.from)
+        }
         history.push('/home')
       },
     })
