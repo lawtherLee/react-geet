@@ -1,9 +1,9 @@
-import { LoginFormValues, Token, User, UserProfile } from '@/types/data'
+import {LoginFormValues, User, UserProfile} from '@/types/data'
 import request from '@/utils/request'
-import { AxiosResponse } from 'axios'
+import {AxiosResponse} from 'axios'
 
 export const loginApi = (data: LoginFormValues) => {
-  return request.post<AxiosResponse<Token>>('/authorizations', data)
+  return request.post('/authorizations', data)
 }
 
 export const getCodeApi = (mobile: string) => {
