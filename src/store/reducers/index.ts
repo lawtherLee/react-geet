@@ -1,13 +1,11 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from "redux";
 
-import {login} from './login'
+import { login } from "./login";
+import profile from "./profile";
 
 const rootReducer = combineReducers({
   login,
-  
-})
+  profile,
+});
 
-export default rootReducer
-
-
-
+export default rootReducer;

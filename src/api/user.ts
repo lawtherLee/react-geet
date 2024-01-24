@@ -1,25 +1,24 @@
-import {LoginFormValues, User, UserProfile} from '@/types/data'
-import request from '@/utils/request'
-import {AxiosResponse} from 'axios'
+import { LoginFormValues, User, UserProfile } from "@/types/data";
+import request from "@/utils/request";
 
 export const loginApi = (data: LoginFormValues) => {
-  return request.post('/authorizations', data)
-}
+  return request.post("/authorizations", data);
+};
 
 export const getCodeApi = (mobile: string) => {
-  return request.get('/sms/codes/' + mobile)
-}
+  return request.get("/sms/codes/" + mobile);
+};
 
 export const getUserApi = () => {
-  return request.get<AxiosResponse<User>>('/user')
-}
+  return request.get<User>("/user");
+};
 
 export const getUserProfileApi = () => {
-  return request.get<AxiosResponse<UserProfile>>('/user/profile')
-}
+  return request.get<UserProfile>("/user/profile");
+};
 
 export const updateUserProfileApi = (key: string, value: string) => {
-  return request.patch('/user/profile', {
+  return request.patch("/user/profile", {
     [key]: value,
-  })
-}
+  });
+};
