@@ -2,23 +2,26 @@ import { Button, DatePicker, List, NavBar, Popup } from "antd-mobile";
 import classNames from "classnames";
 
 import styles from "./index.module.scss";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useInitState } from "@/hooks";
 import { getUserProfile } from "@/store/actions/profile";
-import { RootState } from "@/types/store";
+import EditInput from "@/pages/Edit/components/EditInput";
 
 const Item = List.Item;
 
 const ProfileEdit = () => {
+  type ShowInputType = { type: "" | "name" | "intro"; visible: boolean };
   const history = useHistory();
-  const dispatch = useDispatch();
-  const userProfile = useSelector(
-    (state: RootState) => state.profile.userProfile,
-  );
-  useEffect(() => {
-    dispatch(getUserProfile());
-  }, []);
+  const [showInput, setShowInput] = useState<ShowInputType>({
+    type: "",
+    visible: false,
+  });
+  // 关闭编辑昵称和简介的弹层
+  const onCloseInput = () => {
+    setShowInput({ type: "", visible: false });
+  };
+  const { userProfile } = useInitState("profile", getUserProfile);
   return (
     <div className={styles.root}>
       <div className="content">
@@ -47,10 +50,15 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={userProfile.name}>
+            <Item
+              onClick={() => setShowInput({ type: "name", visible: true })}
+              arrow
+              extra={userProfile.name}
+            >
               昵称
             </Item>
             <Item
+              onClick={() => setShowInput({ type: "intro", visible: true })}
               arrow
               extra={
                 <span className={classNames("intro", "normal")}>
@@ -88,10 +96,12 @@ const ProfileEdit = () => {
       {/* 编辑昵称和简介的弹层 */}
       <Popup
         position="right"
-        visible={false}
+        visible={showInput.visible}
         bodyStyle={{ height: "100vh" }}
         destroyOnClose
-      ></Popup>
+      >
+        <EditInput type={showInput.type} onClose={onCloseInput} />
+      </Popup>
 
       {/* 编辑性别和头像的弹层 */}
       <Popup visible={false} destroyOnClose></Popup>

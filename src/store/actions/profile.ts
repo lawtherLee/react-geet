@@ -15,7 +15,6 @@ export const getUser = (): RootThunkAction => {
 export const getUserProfile = (): RootThunkAction => {
   return async (dispatch) => {
     const res = await getUserProfileApi();
-    console.log(res);
     dispatch({
       type: "profile/getUserProfile",
       payload: res.data,
