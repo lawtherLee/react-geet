@@ -8,6 +8,7 @@ import { useInitState } from "@/hooks";
 import { getUserProfile, updateUserProfile } from "@/store/actions/profile";
 import EditInput from "@/pages/Edit/components/EditInput";
 import { useDispatch } from "react-redux";
+import EditList from "@/pages/Edit/components/EditList";
 
 const Item = List.Item;
 
@@ -99,7 +100,11 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={userProfile.gender ? "男" : "女"}>
+            <Item
+              onClick={() => setUserList({ type: "gender", visible: true })}
+              arrow
+              extra={userProfile.gender ? "男" : "女"}
+            >
               性别
             </Item>
             <Item arrow extra={userProfile.birthday}>
@@ -141,7 +146,7 @@ const ProfileEdit = () => {
         destroyOnClose
         onMaskClick={onCloseUserList}
       >
-        123
+        <EditList onClose={onCloseUserList} type={userList.type} />
       </Popup>
     </div>
   );
