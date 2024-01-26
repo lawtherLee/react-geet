@@ -1,18 +1,21 @@
-import { Button, DatePicker, List, NavBar, Popup } from "antd-mobile";
+import { Button, DatePicker, List, NavBar, Popup, Toast } from "antd-mobile";
 import classNames from "classnames";
 
 import styles from "./index.module.scss";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useInitState } from "@/hooks";
-import { getUserProfile } from "@/store/actions/profile";
+import { getUserProfile, updateUserProfile } from "@/store/actions/profile";
 import EditInput from "@/pages/Edit/components/EditInput";
+import { useDispatch } from "react-redux";
 
 const Item = List.Item;
 
 const ProfileEdit = () => {
   type ShowInputType = { type: "" | "name" | "intro"; visible: boolean };
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const [showInput, setShowInput] = useState<ShowInputType>({
     type: "",
     visible: false,
@@ -22,6 +25,30 @@ const ProfileEdit = () => {
     setShowInput({ type: "", visible: false });
   };
   const { userProfile } = useInitState("profile", getUserProfile);
+
+  // 父组件更新用户信息
+  const onUpdateUserProfile = (type: "" | "name" | "intro", value: string) => {
+    dispatch(updateUserProfile(type, value));
+    Toast.show("更新成功");
+    onCloseInput();
+  };
+
+  // 实现性别和头像
+  type UserListType = {
+    type: "" | "gender" | "photo";
+    visible: boolean;
+  };
+  const [userList, setUserList] = useState<UserListType>({
+    type: "",
+    visible: false,
+  });
+  const onCloseUserList = () => {
+    setUserList({
+      type: "",
+      visible: false,
+    });
+  };
+
   return (
     <div className={styles.root}>
       <div className="content">
@@ -47,6 +74,7 @@ const ProfileEdit = () => {
                 </span>
               }
               arrow
+              onClick={() => setUserList({ type: "photo", visible: true })}
             >
               头像
             </Item>
@@ -100,11 +128,21 @@ const ProfileEdit = () => {
         bodyStyle={{ height: "100vh" }}
         destroyOnClose
       >
-        <EditInput type={showInput.type} onClose={onCloseInput} />
+        <EditInput
+          onUpdateUserProfile={onUpdateUserProfile}
+          type={showInput.type}
+          onClose={onCloseInput}
+        />
       </Popup>
 
       {/* 编辑性别和头像的弹层 */}
-      <Popup visible={false} destroyOnClose></Popup>
+      <Popup
+        visible={userList.visible}
+        destroyOnClose
+        onMaskClick={onCloseUserList}
+      >
+        123
+      </Popup>
     </div>
   );
 };
