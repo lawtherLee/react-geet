@@ -4,6 +4,7 @@ import {
   getUserProfileApi,
   updateUserProfileApi,
 } from "@/api/user";
+import request from "@/utils/request";
 
 export const getUser = (): RootThunkAction => {
   return async (dispatch) => {
@@ -28,11 +29,19 @@ export const getUserProfile = (): RootThunkAction => {
 
 // 更新用户资料
 export const updateUserProfile = (
-  type: "" | "name" | "intro",
+  type: "" | "name" | "intro" | "gender" | "photo",
   value: string,
 ): RootThunkAction => {
   return async (dispatch) => {
     await updateUserProfileApi(type, value);
+    dispatch(getUserProfile());
+  };
+};
+
+// 更新用户头像
+export const updateUserPhoto = (data: FormData): RootThunkAction => {
+  return async (dispatch) => {
+    await request.patch("/user/photo", data);
     dispatch(getUserProfile());
   };
 };

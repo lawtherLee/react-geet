@@ -2,10 +2,14 @@ import { Button, DatePicker, List, NavBar, Popup, Toast } from "antd-mobile";
 import classNames from "classnames";
 
 import styles from "./index.module.scss";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useInitState } from "@/hooks";
-import { getUserProfile, updateUserProfile } from "@/store/actions/profile";
+import {
+  getUserProfile,
+  updateUserPhoto,
+  updateUserProfile,
+} from "@/store/actions/profile";
 import EditInput from "@/pages/Edit/components/EditInput";
 import { useDispatch } from "react-redux";
 import EditList from "@/pages/Edit/components/EditList";
@@ -16,7 +20,7 @@ const ProfileEdit = () => {
   type ShowInputType = { type: "" | "name" | "intro"; visible: boolean };
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [showInput, setShowInput] = useState<ShowInputType>({
     type: "",
     visible: false,
@@ -27,7 +31,7 @@ const ProfileEdit = () => {
   };
   const { userProfile } = useInitState("profile", getUserProfile);
 
-  // 父组件更新用户信息
+  // 父组件更新用户信息（昵称/简介）
   const onUpdateUserProfile = (type: "" | "name" | "intro", value: string) => {
     dispatch(updateUserProfile(type, value));
     Toast.show("更新成功");
@@ -49,6 +53,28 @@ const ProfileEdit = () => {
       visible: false,
     });
   };
+  // 父组件更新用户信息（头像/性别）
+  const onUpdateGenderOrPhoto = (
+    type: "" | "gender" | "photo",
+    value: string,
+  ) => {
+    if (type === "photo") {
+      fileInputRef.current?.click();
+      return;
+    }
+    dispatch(updateUserProfile(type, value));
+    Toast.show("更新成功");
+    onCloseUserList();
+  };
+
+  // 选择图片
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files![0]);
+    const formData = new FormData();
+    formData.append("photo", e.target.files![0]);
+    dispatch(updateUserPhoto(formData));
+    onCloseUserList();
+  };
 
   return (
     <div className={styles.root}>
@@ -67,7 +93,12 @@ const ProfileEdit = () => {
           {/* 列表 */}
           <List className="profile-list">
             {/* 列表项 */}
-            <input type="file" hidden />
+            <input
+              onChange={onFileChange}
+              type="file"
+              hidden
+              ref={fileInputRef}
+            />
             <Item
               extra={
                 <span className="avatar-wrapper">
@@ -146,7 +177,11 @@ const ProfileEdit = () => {
         destroyOnClose
         onMaskClick={onCloseUserList}
       >
-        <EditList onClose={onCloseUserList} type={userList.type} />
+        <EditList
+          onUpdate={onUpdateGenderOrPhoto}
+          onClose={onCloseUserList}
+          type={userList.type}
+        />
       </Popup>
     </div>
   );

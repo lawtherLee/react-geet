@@ -3,13 +3,13 @@ import styles from "./index.module.scss";
 type Props = {
   onClose: () => void;
   type: "" | "gender" | "photo";
-  // onUpdate: (type: string, value: string) => void;
+  onUpdate: (type: "" | "gender" | "photo", value: string) => void;
 };
 
-const EditList = ({ onClose, type }: Props) => {
+const EditList = ({ onClose, type, onUpdate }: Props) => {
   const genderList = [
-    { title: "男", value: "0" },
-    { title: "女", value: "1" },
+    { title: "男", value: "1" },
+    { title: "女", value: "0" },
   ];
 
   const photoList = [
@@ -22,7 +22,11 @@ const EditList = ({ onClose, type }: Props) => {
     <div className={styles.root}>
       {list.map((item) => {
         return (
-          <div className={"list-item"} key={item.title}>
+          <div
+            onClick={() => onUpdate(type, item.value)}
+            className={"list-item"}
+            key={item.title}
+          >
             {item.title}
           </div>
         );
