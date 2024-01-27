@@ -29,7 +29,7 @@ export const getUserProfile = (): RootThunkAction => {
 
 // 更新用户资料
 export const updateUserProfile = (
-  type: "" | "name" | "intro" | "gender" | "photo",
+  type: "" | "name" | "intro" | "gender" | "photo" | "birthday",
   value: string,
 ): RootThunkAction => {
   return async (dispatch) => {

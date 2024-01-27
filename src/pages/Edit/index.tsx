@@ -13,6 +13,7 @@ import {
 import EditInput from "@/pages/Edit/components/EditInput";
 import { useDispatch } from "react-redux";
 import EditList from "@/pages/Edit/components/EditList";
+import dayjs from "dayjs";
 
 const Item = List.Item;
 
@@ -55,7 +56,7 @@ const ProfileEdit = () => {
   };
   // 父组件更新用户信息（头像/性别）
   const onUpdateGenderOrPhoto = (
-    type: "" | "gender" | "photo",
+    type: "" | "gender" | "photo" | "birthday",
     value: string,
   ) => {
     if (type === "photo") {
@@ -75,6 +76,9 @@ const ProfileEdit = () => {
     dispatch(updateUserPhoto(formData));
     onCloseUserList();
   };
+
+  // 编辑生日
+  const [showBirthday, setShowBirthday] = useState(false);
 
   return (
     <div className={styles.root}>
@@ -138,17 +142,28 @@ const ProfileEdit = () => {
             >
               性别
             </Item>
-            <Item arrow extra={userProfile.birthday}>
+            <Item
+              onClick={() => setShowBirthday(true)}
+              arrow
+              extra={userProfile.birthday}
+            >
               生日
             </Item>
           </List>
 
           <DatePicker
-            visible={false}
+            visible={showBirthday}
             value={new Date()}
             title="选择年月日"
             min={new Date(1900, 0, 1, 0, 0, 0)}
             max={new Date()}
+            onCancel={() => setShowBirthday(false)}
+            onConfirm={(value) =>
+              onUpdateGenderOrPhoto(
+                "birthday",
+                dayjs(value).format("YYYY-MM-DD"),
+              )
+            }
           />
         </div>
 
