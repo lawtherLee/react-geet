@@ -1,4 +1,12 @@
-import { Button, DatePicker, List, NavBar, Popup, Toast } from "antd-mobile";
+import {
+  Button,
+  DatePicker,
+  Dialog,
+  List,
+  NavBar,
+  Popup,
+  Toast,
+} from "antd-mobile";
 import classNames from "classnames";
 
 import styles from "./index.module.scss";
@@ -14,6 +22,7 @@ import EditInput from "@/pages/Edit/components/EditInput";
 import { useDispatch } from "react-redux";
 import EditList from "@/pages/Edit/components/EditList";
 import dayjs from "dayjs";
+import { logout } from "@/store/actions/login";
 
 const Item = List.Item;
 
@@ -80,6 +89,32 @@ const ProfileEdit = () => {
   // 编辑生日
   const [showBirthday, setShowBirthday] = useState(false);
 
+  // 退出
+  const onLogout = () => {
+    Dialog.show({
+      title: "Are You Sure",
+      content: "人在天边月上明，风初紧，吹入画帘旌",
+      closeOnAction: true,
+      actions: [
+        [
+          {
+            key: "cancel",
+            text: "取消",
+          },
+          {
+            key: "confirm",
+            text: "确认",
+            bold: true,
+            danger: true,
+            onClick: () => {
+              dispatch(logout());
+              history.replace("/login");
+            },
+          },
+        ],
+      ],
+    });
+  };
   return (
     <div className={styles.root}>
       <div className="content">
@@ -168,7 +203,9 @@ const ProfileEdit = () => {
         </div>
 
         <div className="logout">
-          <Button className="btn">退出登录</Button>
+          <Button className="btn" onClick={onLogout}>
+            退出登录
+          </Button>
         </div>
       </div>
 
