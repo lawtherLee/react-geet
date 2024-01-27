@@ -7,6 +7,7 @@ import ProfileEdit from "@/pages/Edit";
 
 import history from "./utils/history";
 import PrivateRoute from "@/components/PrivateRoute";
+import Chat from "@/pages/Chat";
 
 const App = () => {
   // const count = useCountDown(2178216121)
@@ -23,6 +24,10 @@ const App = () => {
             <ProfileEdit />
           </PrivateRoute>
           {/*<Route path={"/profile/edit"} component={ProfileEdit} />*/}
+
+          <PrivateRoute path="/chat">
+            <Chat />
+          </PrivateRoute>
         </Switch>
       </div>
     </Router>
