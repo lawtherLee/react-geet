@@ -11,6 +11,7 @@ const Login = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation<{ from: string }>();
+
   // 提交表单
   const onFinish = async (values: LoginFormValues) => {
     await dispatch(login(values));
@@ -30,7 +31,6 @@ const Login = () => {
   const inputRef = useRef<InputRef>(null);
   const [countDown, setCountDown] = useState(0);
   const timerRef = useRef(0);
-  console.log(timerRef);
 
   const onGetCode = async () => {
     const mobile = form.getFieldValue("mobile");
