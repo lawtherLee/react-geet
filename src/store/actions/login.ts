@@ -1,4 +1,4 @@
-import { LoginFormValues } from "@/types/data";
+import { LoginFormValues, Token } from "@/types/data";
 import { getCodeApi, loginApi } from "@/api/user";
 import { LoginAction, RootThunkAction } from "@/types/store";
 import { removeToken, setToken } from "@/utils/storage"; // 创建login的action的函数 并且是异步的
@@ -27,5 +27,14 @@ export const logout = (): LoginAction => {
   removeToken();
   return {
     type: "logout/logout",
+  };
+};
+
+// 更新token
+export const updateToken = (payload: Token): LoginAction => {
+  setToken(payload);
+  return {
+    type: "login/updatetoken",
+    payload,
   };
 };
