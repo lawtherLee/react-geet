@@ -21,6 +21,8 @@ const Chat = () => {
   const [message, setMessage] = useState("");
 
   const clientRef = useRef<Socket | null>(null);
+
+  const chatListRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     // 创建客户端实例
     const client = io("http://toutiao.itheima.net", {
@@ -34,6 +36,24 @@ const Chat = () => {
     client.on("connect", () => {
       setMessageList([{ type: "robot", text: "我是小勇，我来了" }]);
     });
+    // 监听服务端发送的信息
+    client.on("message", (data) => {
+      setMessageList((messageList) => {
+        return [
+          ...messageList,
+          {
+            type: "robot",
+            text: data.msg,
+          },
+        ];
+      });
+      // 滚动条置地
+      chatListRef.current!.scrollTop = chatListRef.current!.scrollHeight;
+    });
+    // 组件销毁断开连接
+    return () => {
+      client.close();
+    };
   }, []);
 
   // 监听回车
@@ -43,8 +63,20 @@ const Chat = () => {
         msg: message,
         timestamp: Date.now(),
       });
+      setMessageList((messageList) => {
+        return [
+          ...messageList,
+          {
+            type: "user",
+            text: message,
+          },
+        ];
+      });
+      chatListRef.current!.scrollTop = chatListRef.current!.scrollHeight;
+      setMessage("");
     }
   };
+
   return (
     <div className={styles.root}>
       {/* 顶部导航栏 */}
@@ -53,7 +85,7 @@ const Chat = () => {
       </NavBar>
 
       {/* 聊天记录列表 */}
-      <div className="chat-list">
+      <div className="chat-list" ref={chatListRef}>
         {/* 机器人的消息 */}
         {messageList.map((item, index) =>
           item.type === "robot" ? (
