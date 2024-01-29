@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "@/components/Icon";
 import styles from "./index.module.scss";
-import { Tabs } from "antd-mobile";
-import { getChannels } from "@/store/actions/home";
+import { Popup, Tabs } from "antd-mobile";
+import { getAllChannels, getChannels } from "@/store/actions/home";
 import { useInitState } from "@/hooks";
 import { Channel } from "@/types/data";
+import Channels from "@/pages/Home/components/Channels";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
   const { channels } = useInitState("home", getChannels);
-  console.log(channels);
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getChannels());
-  // }, []);
+
+  const [editChannelPopup, setEditChannelPopup] = useState(false);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllChannels());
+  }, []);
   return (
     <div className={styles.root}>
       {/*频道列表*/}
@@ -25,8 +29,21 @@ const Home = () => {
       </Tabs>
       <div className={"tabs-opration"}>
         <Icon type={"iconbtn_search"} />
-        <Icon type={"iconbtn_channel"} />
+        <Icon
+          type={"iconbtn_channel"}
+          onClick={() => setEditChannelPopup(true)}
+        />
       </div>
+
+      {/*编辑频道弹出层*/}
+      <Popup
+        destroyOnClose
+        position={"left"}
+        onMaskClick={() => setEditChannelPopup(false)}
+        visible={editChannelPopup}
+      >
+        <Channels onClose={() => setEditChannelPopup(false)} />
+      </Popup>
     </div>
   );
 };
