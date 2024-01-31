@@ -1,6 +1,6 @@
-import { RootThunkAction } from "@/types/store";
+import { HomeAction, RootThunkAction } from "@/types/store";
 import request from "@/utils/request";
-import { getChannelsStorage, hasToken, setChannels } from "@/utils/storage";
+import { getChannelsStorage, hasToken, setChannels } from "@/utils/storage"; // 获取频道列表
 
 // 获取频道列表
 export const getChannels = (): RootThunkAction => {
@@ -36,9 +36,19 @@ export const getChannels = (): RootThunkAction => {
 
 // 获取所有频道
 export const getAllChannels = (): RootThunkAction => {
-  return async () => {
+  return async (dispatch) => {
     const res = await request.get("/channels");
-    console.log(res);
-    // console.log(res.data.channels);
+    dispatch({
+      type: "home/saveAllChannels",
+      payload: res.data.channels,
+    });
+  };
+};
+
+// 设置点击频道高亮
+export const setChannelActive = (payload: number): HomeAction => {
+  return {
+    type: "home/setChannelActive",
+    payload,
   };
 };
