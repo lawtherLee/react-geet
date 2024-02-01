@@ -22,9 +22,11 @@ const Home = () => {
     dispatch(getAllChannels());
   }, []);
 
+  // 切换tab
   const onTabsChange = (key: string) => {
     dispatch(setChannelActive(+key));
   };
+
   return (
     <div className={styles.root}>
       {/*频道列表*/}

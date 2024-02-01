@@ -1,13 +1,14 @@
 import { HomeAction, RootThunkAction } from "@/types/store";
 import request from "@/utils/request";
-import { getChannelsStorage, hasToken, setChannels } from "@/utils/storage"; // 获取频道列表
+import { getChannelsStorage, hasToken, setChannels } from "@/utils/storage";
+import { Channel } from "@/types/data"; // 获取频道列表
 
 // 获取频道列表
 export const getChannels = (): RootThunkAction => {
   return async (dispatch) => {
     // 判断是否登录
     if (hasToken()) {
-      const res = await request.get("/channels");
+      const res = await request.get("/user/channels");
       const { channels } = res.data;
       dispatch({
         type: "home/saveChannels",
@@ -22,7 +23,7 @@ export const getChannels = (): RootThunkAction => {
           payload: localChannels,
         });
       } else {
-        const res = await request.get("/channels");
+        const res = await request.get("/user/channels");
         const { channels } = res.data;
         dispatch({
           type: "home/saveChannels",
@@ -50,5 +51,27 @@ export const setChannelActive = (payload: number): HomeAction => {
   return {
     type: "home/setChannelActive",
     payload,
+  };
+};
+
+// 添加频道
+export const addChannel = (item: Channel): RootThunkAction => {
+  return async (dispatch, getState) => {
+    let channels: Channel[] = [];
+    if (hasToken()) {
+      // 发请求
+      const res = await request.patch("/user/channels", {
+        channels: [item],
+      });
+      console.log(res);
+    } else {
+      // 存本地
+      setChannels(channels);
+    }
+    channels = [...getState().home.channels, item];
+    dispatch({
+      type: "home/saveChannels",
+      payload: channels,
+    });
   };
 };

@@ -5,7 +5,8 @@ import { RootState } from "@/types/store";
 import classnames from "classnames";
 import { Channel } from "@/types/data";
 import { differenceBy } from "lodash";
-import { setChannelActive } from "@/store/actions/home";
+import { addChannel, setChannelActive } from "@/store/actions/home";
+import { useState } from "react";
 
 type Props = {
   onClose: () => void;
@@ -33,6 +34,14 @@ const Channels = ({ onClose }: Props) => {
     dispatch(setChannelActive(id));
     onClose();
   };
+
+  // 编辑
+  const [isEdit, setIsEdit] = useState(false);
+
+  // 点击频道推荐添加到我的频道
+  const onClickRecommendChannel = (item: Channel) => {
+    dispatch(addChannel(item));
+  };
   return (
     <div className={styles.root}>
       <div className="channel-header">
@@ -40,11 +49,18 @@ const Channels = ({ onClose }: Props) => {
       </div>
       <div className="channel-content">
         {/* 编辑时，添加类名 edit */}
-        <div>
+        <div className={classnames("channel-item", isEdit ? "edit" : "")}>
           <div className="channel-item-header">
             <span className="channel-item-title">我的频道</span>
-            <span className="channel-item-title-extra">1</span>
-            <span className="channel-item-edit">"完成"</span>
+            <span className="channel-item-title-extra">
+              {isEdit ? "点击删除" : "点击进入频道"}
+            </span>
+            <span
+              className="channel-item-edit"
+              onClick={() => setIsEdit(!isEdit)}
+            >
+              {isEdit ? "完成" : "编辑"}
+            </span>
           </div>
           <div className="channel-list">
             {/* 选中时，添加类名 selected */}
@@ -73,8 +89,12 @@ const Channels = ({ onClose }: Props) => {
           </div>
           <div className="channel-list">
             {recomendChannels.map((item) => (
-              <span key={item.id} className={"channel-list-item"}>
-                {item.name}
+              <span
+                onClick={() => onClickRecommendChannel(item)}
+                key={item.id}
+                className={"channel-list-item"}
+              >
+                + {item.name}
               </span>
             ))}
           </div>
