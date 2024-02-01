@@ -5,7 +5,7 @@ import { RootState } from "@/types/store";
 import classnames from "classnames";
 import { Channel } from "@/types/data";
 import { differenceBy } from "lodash";
-import { addChannel, setChannelActive } from "@/store/actions/home";
+import { addChannel, delChannel, setChannelActive } from "@/store/actions/home";
 import { useState } from "react";
 
 type Props = {
@@ -31,8 +31,12 @@ const Channels = ({ onClose }: Props) => {
 
   // 点击我的频道切换
   const onClickMyChannel = (id: number) => {
-    dispatch(setChannelActive(id));
-    onClose();
+    if (isEdit) {
+      dispatch(delChannel(id));
+    } else {
+      dispatch(setChannelActive(id));
+      onClose();
+    }
   };
 
   // 编辑

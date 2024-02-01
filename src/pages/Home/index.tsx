@@ -11,6 +11,7 @@ import { useInitState } from "@/hooks";
 import { Channel } from "@/types/data";
 import Channels from "@/pages/Home/components/Channels";
 import { useDispatch } from "react-redux";
+import ArticleList from "@/pages/Home/components/ArticleList";
 
 const Home = () => {
   const { channels, active } = useInitState("home", getChannels);
@@ -30,10 +31,10 @@ const Home = () => {
   return (
     <div className={styles.root}>
       {/*频道列表*/}
-      <Tabs activeKey={active} onChange={onTabsChange}>
+      <Tabs activeKey={active + ""} onChange={onTabsChange}>
         {(channels as Channel[]).map((item) => (
           <Tabs.Tab title={item.name} key={item.id}>
-            {item.name}
+            <ArticleList channelId={item.id} />
           </Tabs.Tab>
         ))}
       </Tabs>

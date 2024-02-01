@@ -1,7 +1,7 @@
 import { HomeAction, RootThunkAction } from "@/types/store";
 import request from "@/utils/request";
 import { getChannelsStorage, hasToken, setChannels } from "@/utils/storage";
-import { Channel } from "@/types/data"; // 获取频道列表
+import { Channel } from "@/types/data";
 
 // 获取频道列表
 export const getChannels = (): RootThunkAction => {
@@ -72,6 +72,45 @@ export const addChannel = (item: Channel): RootThunkAction => {
     dispatch({
       type: "home/saveChannels",
       payload: channels,
+    });
+  };
+};
+
+export const delChannel = (id: number): RootThunkAction => {
+  return async (dispatch, getState) => {
+    if (hasToken()) {
+      await request.delete("/user/channels", {
+        data: {
+          channels: [id],
+        },
+      });
+    } else {
+      const { channels } = getState().home;
+      const newChannels = channels.filter((item) => item.id !== id);
+      setChannels(newChannels);
+    }
+    dispatch(getChannels());
+  };
+};
+
+export const getArticleList = (
+  channel_id: number,
+  timestamp: number,
+): RootThunkAction => {
+  return async (dispatch) => {
+    const res = await request.get("/articles", {
+      params: {
+        channel_id,
+        timestamp,
+      },
+    });
+    dispatch({
+      type: "home/setChannelArticles",
+      payload: {
+        channelId: channel_id,
+        pre_timestamp: res.data.pre_timestamp,
+        articleList: res.data.results,
+      },
     });
   };
 };

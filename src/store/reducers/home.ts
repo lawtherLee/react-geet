@@ -1,15 +1,22 @@
 import { HomeAction } from "@/types/store";
-import { Channel } from "@/types/data";
+import { Article, Channel } from "@/types/data";
 
 type StateType = {
   channels: Channel[];
   allChannels: Channel[];
   active: number;
+  channelArticles: {
+    [key: number]: {
+      pre_timestamp: string;
+      results: Article[];
+    };
+  };
 };
 const initState: StateType = {
   channels: [],
   allChannels: [],
   active: 0,
+  channelArticles: {},
 };
 const home = (state = initState, action: HomeAction) => {
   switch (action.type) {
@@ -27,6 +34,17 @@ const home = (state = initState, action: HomeAction) => {
       return {
         ...state,
         active: action.payload,
+      };
+    case "home/setChannelArticles":
+      return {
+        ...state,
+        channelArticles: {
+          ...state.channelArticles,
+          [action.payload.channelId]: {
+            pre_timestamp: action.payload.pre_timestamp,
+            results: action.payload.articleList,
+          },
+        },
       };
     default:
       return state;
