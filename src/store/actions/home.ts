@@ -1,7 +1,7 @@
 import { HomeAction, RootThunkAction } from "@/types/store";
 import request from "@/utils/request";
 import { getChannelsStorage, hasToken, setChannels } from "@/utils/storage";
-import { Channel } from "@/types/data";
+import { Channel } from "@/types/data"; // 获取频道列表
 
 // 获取频道列表
 export const getChannels = (): RootThunkAction => {
@@ -86,7 +86,9 @@ export const delChannel = (id: number): RootThunkAction => {
       });
     } else {
       const { channels } = getState().home;
-      const newChannels = channels.filter((item) => item.id !== id);
+      const newChannels = (channels as Channel[]).filter(
+        (item) => item.id !== id,
+      );
       setChannels(newChannels);
     }
     dispatch(getChannels());
@@ -109,6 +111,28 @@ export const getArticleList = (
       payload: {
         channelId: channel_id,
         pre_timestamp: res.data.pre_timestamp,
+        articleList: res.data.results,
+      },
+    });
+  };
+};
+
+export const getNewArticles = (
+  channel_id: number,
+  timestamp: string,
+): RootThunkAction => {
+  return async (dispatch) => {
+    const res = await request.get("/articles", {
+      params: {
+        channel_id,
+        timestamp,
+      },
+    });
+    dispatch({
+      type: "home/setNewArticels",
+      payload: {
+        channelId: channel_id,
+        pre_timestamp: timestamp,
         articleList: res.data.results,
       },
     });

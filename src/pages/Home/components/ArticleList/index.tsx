@@ -1,9 +1,9 @@
 import styles from "./index.module.scss";
-import { PullToRefresh } from "antd-mobile";
+import { InfiniteScroll, PullToRefresh } from "antd-mobile";
 import ArticleItem from "@/pages/Home/components/ArticleItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getArticleList } from "@/store/actions/home";
+import { getArticleList, getNewArticles } from "@/store/actions/home";
 import { RootState } from "@/types/store";
 
 type Props = {
@@ -16,16 +16,27 @@ const ArticleList = ({ channelId }: Props) => {
   }, []);
 
   const { channelArticles } = useSelector((state: RootState) => state.home);
-  const articleList = channelArticles[channelId] || {};
+  const { results = [] } = channelArticles[channelId] || {};
+
+  // 上拉触底
+  const [hasMore, setHasMore] = useState(false);
+  const loadMore = async () => {
+    dispatch(getArticleList(channelId, Date.now()));
+  };
+  // 下拉刷新
+  const onRefresh = async () => {
+    dispatch(getNewArticles(channelId, Date.now() + ""));
+  };
   return (
     <div className={styles.root}>
-      <PullToRefresh>
+      <PullToRefresh onRefresh={onRefresh}>
         {/* 文章列表中的每一项 */}
         <div className="article-item">
-          {articleList.results?.map((item) => {
+          {results?.map((item) => {
             return <ArticleItem article={item} key={item.art_id} />;
           })}
         </div>
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
       </PullToRefresh>
     </div>
   );

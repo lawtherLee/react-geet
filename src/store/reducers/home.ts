@@ -36,6 +36,19 @@ const home = (state = initState, action: HomeAction) => {
         active: action.payload,
       };
     case "home/setChannelArticles":
+      const oldState =
+        state.channelArticles[action.payload.channelId]?.results || [];
+      return {
+        ...state,
+        channelArticles: {
+          ...state.channelArticles,
+          [action.payload.channelId]: {
+            pre_timestamp: action.payload.pre_timestamp,
+            results: [...oldState, ...action.payload.articleList],
+          },
+        },
+      };
+    case "home/setNewArticels":
       return {
         ...state,
         channelArticles: {
