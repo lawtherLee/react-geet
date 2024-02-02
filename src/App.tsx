@@ -8,6 +8,7 @@ import ProfileEdit from "@/pages/Edit";
 import history from "./utils/history";
 import PrivateRoute from "@/components/PrivateRoute";
 import Chat from "@/pages/Chat";
+import Article from "@/pages/Article";
 
 const App = () => {
   // const count = useCountDown(2178216121)
@@ -19,7 +20,7 @@ const App = () => {
           <Route exact path="/" render={() => <Redirect to="/home" />}></Route>
           <Route path="/login" component={Login} />
           <Route path="/home" component={Layout} />
-
+          <Route path="/article/:id" component={Article} />
           <PrivateRoute path="/profile/edit">
             <ProfileEdit />
           </PrivateRoute>

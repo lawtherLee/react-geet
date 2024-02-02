@@ -12,8 +12,10 @@ import { Channel } from "@/types/data";
 import Channels from "@/pages/Home/components/Channels";
 import { useDispatch } from "react-redux";
 import ArticleList from "@/pages/Home/components/ArticleList";
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
+  const history = useHistory();
   const { channels, active } = useInitState("home", getChannels);
 
   const [editChannelPopup, setEditChannelPopup] = useState(false);
@@ -39,7 +41,7 @@ const Home = () => {
         ))}
       </Tabs>
       <div className={"tabs-opration"}>
-        <Icon type={"iconbtn_search"} />
+        <Icon type={"iconbtn_search"} onClick={() => history.push("/search")} />
         <Icon
           type={"iconbtn_channel"}
           onClick={() => setEditChannelPopup(true)}
