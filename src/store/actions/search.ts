@@ -1,4 +1,4 @@
-import { RootThunkAction } from "@/types/store";
+import { RootThunkAction, SearchAction } from "@/types/store";
 import request from "@/utils/request";
 
 export const getSuggestionAction = (value: string): RootThunkAction => {
@@ -12,5 +12,13 @@ export const getSuggestionAction = (value: string): RootThunkAction => {
       type: "search/getSuggestion",
       payload: res.data.options,
     });
+  };
+};
+
+// 存储搜索历史
+export const saveHistory = (val: string): SearchAction => {
+  return {
+    type: "search/saveHistory",
+    payload: val,
   };
 };
