@@ -1,8 +1,8 @@
-import { SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
+import { ArticleInfo, SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
 import { Article, Suggestion } from "./data.d";
 import { Channel, User, UserProfile } from "@/types/data";
 import store from "@/store";
-import { ThunkAction } from "redux-thunk";
+import { ThunkAction } from "redux-thunk"; // 存 所有redux相关的数据类型
 
 // 存 所有redux相关的数据类型
 
@@ -76,7 +76,16 @@ type SearchAction =
       type: "search/getSearchResults";
       payload: SearchResults[];
     };
-type RootAction = LoginAction | ProfileAction | HomeAction | SearchAction;
+type ArticleAction = {
+  type: "article/getArticleInfo";
+  payload: ArticleInfo;
+};
+type RootAction =
+  | LoginAction
+  | ProfileAction
+  | HomeAction
+  | SearchAction
+  | ArticleAction;
 
 type RootState = ReturnType<typeof store.getState>;
 

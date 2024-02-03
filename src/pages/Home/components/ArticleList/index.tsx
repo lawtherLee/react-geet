@@ -16,7 +16,7 @@ const ArticleList = ({ channelId }: Props) => {
   }, []);
 
   const { channelArticles } = useSelector((state: RootState) => state.home);
-  const { results = [] } = channelArticles[channelId] || {};
+  const { results } = channelArticles[channelId] || {};
 
   // 上拉触底
   const [hasMore, setHasMore] = useState(false);

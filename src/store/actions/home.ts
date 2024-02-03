@@ -68,6 +68,7 @@ export const addChannel = (item: Channel): RootThunkAction => {
       // 存本地
       setChannels(channels);
     }
+    // @ts-ignore
     channels = [...getState().home.channels, item];
     dispatch({
       type: "home/saveChannels",

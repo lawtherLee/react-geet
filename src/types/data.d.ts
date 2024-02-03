@@ -70,6 +70,22 @@ export type SearchResults = {
   is_top: number;
 };
 
+export type ArticleInfo = {
+  art_id: string;
+  attitude: number;
+  aut_id: string;
+  aut_name: string;
+  aut_photo: string;
+  comm_count: number;
+  content: string;
+  is_collected: boolean;
+  is_followed: boolean;
+  like_count: number;
+  pubdate: string;
+  read_count: number;
+  title: string;
+};
+
 type ApiResponse<T> = AxiosResponse<T>;
 
 export { LoginFormValues, Channel, Token, ApiResponse, User, UserProfile };

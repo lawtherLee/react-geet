@@ -45,7 +45,7 @@ const home = (state = initState, action: HomeAction) => {
           [action.payload.channelId]: {
             pre_timestamp: action.payload.pre_timestamp,
             results: [
-              // ...oldState, 就这两条数据加上直接会报重复key的错
+              ...oldState, //就这两条数据加上直接会报重复key的错
               ...action.payload.articleList,
             ],
           },
