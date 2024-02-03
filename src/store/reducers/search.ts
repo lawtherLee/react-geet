@@ -30,6 +30,11 @@ const search = (state = initState, action: SearchAction) => {
         ...state,
         history: newHistory.slice(0, 10),
       };
+    case "search/clearHistory":
+      return {
+        ...state,
+        history: [],
+      };
     default:
       return state;
   }

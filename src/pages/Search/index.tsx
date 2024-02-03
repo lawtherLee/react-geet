@@ -4,7 +4,11 @@ import styles from "./index.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useDebounceFn } from "ahooks";
-import { getSuggestionAction, saveHistory } from "@/store/actions/search";
+import {
+  clearHistory,
+  getSuggestionAction,
+  saveHistory,
+} from "@/store/actions/search";
 import { RootState } from "@/types/store";
 import { Suggestion } from "@/types/data";
 import Icon from "@/components/Icon";
@@ -72,6 +76,11 @@ const SearchPage = () => {
   const onClickHistory = (value: string) => {
     onSearch(value);
   };
+
+  // 清空搜索历史
+  const onClearHistory = () => {
+    dispatch(clearHistory());
+  };
   return (
     <div className={styles.root}>
       <NavBar
@@ -114,7 +123,7 @@ const SearchPage = () => {
         <div className="history">
           <div className="history-header">
             <span>搜索历史</span>
-            <span>
+            <span onClick={onClearHistory}>
               <Icon type="iconbtn_del" />
               清除全部
             </span>
