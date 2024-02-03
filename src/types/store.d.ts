@@ -1,5 +1,5 @@
 import { SearchResult } from "@/pages/Search/Result";
-import { Article } from "./data.d";
+import { Article, Suggestion } from "./data.d";
 import { Channel, User, UserProfile } from "@/types/data";
 import store from "@/store";
 import { ThunkAction } from "redux-thunk";

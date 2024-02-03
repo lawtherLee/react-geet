@@ -2,27 +2,41 @@ import { useHistory } from "react-router";
 import { NavBar, SearchBar } from "antd-mobile";
 import styles from "./index.module.scss";
 import { useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useDebounceFn } from "ahooks";
+import { getSuggestionAction } from "@/store/actions/search";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [value, setValue] = useState("");
-  const setIdRef = useRef(0);
+  // 常规防抖用
+  // const setIdRef = useRef(0);
+
+  // aHooks防抖
+  const { run: getSuggestion } = useDebounceFn(
+    () => {
+      dispatch(getSuggestionAction(value));
+    },
+    { wait: 800 },
+  );
   const onChange = (e: string) => {
     setValue(e);
-    clearTimeout(setIdRef.current);
-    setIdRef.current = window.setTimeout(() => {
-      console.log("防痘了");
-    }, 800);
+    getSuggestion();
+
+    // 常规防抖
+    // clearTimeout(setIdRef.current);
+    // setIdRef.current = window.setTimeout(() => {
+    //   console.log("防痘了");
+    // }, 800);
   };
 
   // 组件销毁清除防抖
-  useEffect(() => {
-    return () => {
-      clearTimeout(setIdRef.current);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     clearTimeout(setIdRef.current);
+  //   };
+  // }, []);
   return (
     <div className={styles.root}>
       <NavBar
