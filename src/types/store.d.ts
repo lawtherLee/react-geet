@@ -1,9 +1,8 @@
-import { SearchResult } from "@/pages/Search/Result";
+import { SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
 import { Article, Suggestion } from "./data.d";
 import { Channel, User, UserProfile } from "@/types/data";
 import store from "@/store";
 import { ThunkAction } from "redux-thunk";
-import { Token } from "./data"; // 存 所有redux相关的数据类型
 
 // 存 所有redux相关的数据类型
 
@@ -75,7 +74,7 @@ type SearchAction =
     }
   | {
       type: "search/getSearchResults";
-      payload: SearchResult[];
+      payload: SearchResults[];
     };
 type RootAction = LoginAction | ProfileAction | HomeAction | SearchAction;
 

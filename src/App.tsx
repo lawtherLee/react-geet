@@ -10,6 +10,7 @@ import PrivateRoute from "@/components/PrivateRoute";
 import Chat from "@/pages/Chat";
 import Article from "@/pages/Article";
 import Search from "@/pages/Search";
+import Result from "@/pages/Search/Result";
 
 const App = () => {
   // const count = useCountDown(2178216121)
@@ -22,7 +23,8 @@ const App = () => {
           <Route path="/login" component={Login} />
           <Route path="/home" component={Layout} />
           <Route path="/article/:id" component={Article} />
-          <Route path="/search" component={Search} />
+          <Route exact path="/search" component={Search} />
+          <Route path="/search/result" component={Result} />
           <PrivateRoute path="/profile/edit">
             <ProfileEdit />
           </PrivateRoute>

@@ -22,7 +22,6 @@ const SearchPage = () => {
     (state: RootState) => state.search,
   );
   const [isSearching, setIsSearching] = useState(false);
-
   // 常规防抖用
   // const setIdRef = useRef(0);
 
@@ -70,6 +69,7 @@ const SearchPage = () => {
   const onSearch = (value: string) => {
     if (value.trim() === "") return Toast.show({ content: "请输入搜索关键字" });
     dispatch(saveHistory(value));
+    history.push("/search/result?keyword=" + value);
   };
 
   // 点击搜索历史

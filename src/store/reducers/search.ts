@@ -1,14 +1,16 @@
-import { Suggestion } from "@/types/data";
+import { SearchResults, Suggestion } from "@/types/data";
 import { SearchAction } from "@/types/store";
 import { getLocalHistories, setLocalHistories } from "@/utils/storage";
 
 type stateType = {
   suggestions: Suggestion;
   history: Suggestion;
+  searchResults: SearchResults[];
 };
 const initState: stateType = {
   suggestions: [],
   history: getLocalHistories() || [],
+  searchResults: [],
 };
 const search = (state = initState, action: SearchAction) => {
   switch (action.type) {
@@ -34,6 +36,11 @@ const search = (state = initState, action: SearchAction) => {
       return {
         ...state,
         history: [],
+      };
+    case "search/getSearchResults":
+      return {
+        ...state,
+        searchResults: [...state.searchResults, ...action.payload],
       };
     default:
       return state;

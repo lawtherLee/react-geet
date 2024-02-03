@@ -61,11 +61,13 @@ export type SearchResults = {
   collect_count: number;
   comm_count: number;
   cover: {
-    type: number;
+    type: 0 | 1 | 3;
+    images: string[];
   };
   like_count: number;
   pubdate: string;
   title: string;
+  is_top: number;
 };
 
 type ApiResponse<T> = AxiosResponse<T>;

@@ -31,3 +31,22 @@ export const clearHistory = (): SearchAction => {
     type: "search/clearHistory",
   };
 };
+
+// 获取搜索结果
+export const getSearchResults = (
+  keyword: string,
+  page: number,
+): RootThunkAction => {
+  return async (dispatch) => {
+    const res = await request.get("/search", {
+      params: {
+        q: keyword,
+        page,
+      },
+    });
+    dispatch({
+      type: "search/getSearchResults",
+      payload: res.data.results,
+    });
+  };
+};
