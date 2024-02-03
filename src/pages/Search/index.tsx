@@ -1,15 +1,21 @@
 import { useHistory } from "react-router";
 import { NavBar, SearchBar } from "antd-mobile";
 import styles from "./index.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useDebounceFn } from "ahooks";
 import { getSuggestionAction } from "@/store/actions/search";
+import { RootState } from "@/types/store";
+import { Suggestion } from "@/types/data";
+import Icon from "@/components/Icon";
+import classnames from "classnames";
 
 const SearchPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [value, setValue] = useState("");
+  const { suggestions } = useSelector((state: RootState) => state.search);
+
   // 常规防抖用
   // const setIdRef = useRef(0);
 
@@ -20,6 +26,8 @@ const SearchPage = () => {
     },
     { wait: 800 },
   );
+
+  // 输入框变化
   const onChange = (e: string) => {
     setValue(e);
     getSuggestion();
@@ -37,6 +45,14 @@ const SearchPage = () => {
   //     clearTimeout(setIdRef.current);
   //   };
   // }, []);
+
+  // 处理高亮
+  const highLight = (text: string) => {
+    return text.replace(
+      new RegExp(value, "gi"),
+      (match) => `<span>${match}</span>`,
+    );
+  };
   return (
     <div className={styles.root}>
       <NavBar
@@ -52,25 +68,21 @@ const SearchPage = () => {
       </NavBar>
 
       {/*{isSearching ? (*/}
-      {/*  <div className={classnames("search-result", true ? "show" : "")}>*/}
-      {/*    {(suggestions as Suggestion).map((item, index) => {*/}
-      {/*      return (*/}
-      {/*        <div*/}
-      {/*          className="result-item"*/}
-      {/*          key={index}*/}
-      {/*          onClick={() => onSearch(item)}*/}
-      {/*        >*/}
-      {/*          <Icon className="icon-search" type="iconbtn_search" />*/}
-      {/*          <div*/}
-      {/*            className="result-value text-overflow"*/}
-      {/*            dangerouslySetInnerHTML={{*/}
-      {/*              __html: highlight(item),*/}
-      {/*            }}*/}
-      {/*          ></div>*/}
-      {/*        </div>*/}
-      {/*      );*/}
-      {/*    })}*/}
-      {/*  </div>*/}
+      <div className={classnames("search-result", true ? "show" : "")}>
+        {(suggestions as Suggestion).map((item, index) => {
+          return (
+            <div className="result-item" key={index}>
+              <Icon className="icon-search" type="iconbtn_search" />
+              <div
+                className="result-value text-overflow"
+                dangerouslySetInnerHTML={{
+                  __html: highLight(item),
+                }}
+              ></div>
+            </div>
+          );
+        })}
+      </div>
       {/*) : (*/}
       {/*  <div className="history">*/}
       {/*    <div className="history-header">*/}
