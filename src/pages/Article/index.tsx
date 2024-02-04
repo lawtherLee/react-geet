@@ -10,6 +10,9 @@ import { useDispatch } from "react-redux";
 import { getArticleInfo } from "@/store/actions/article";
 import dayjs from "dayjs";
 import { useInitState } from "@/hooks";
+import "highlight.js/styles/vs2015.css";
+import { useEffect } from "react";
+import hljs from "highlight.js";
 
 const Article = () => {
   const history = useHistory();
@@ -23,6 +26,14 @@ const Article = () => {
   //   dispatch(getArticleInfo(id));
   // }, []);
 
+  // 主动给代码设置高亮
+  useEffect(() => {
+    const codeEle = document.querySelectorAll(".dg-html pre code");
+    // console.log(codeEle);
+    codeEle.forEach((item) => {
+      hljs.highlightElement(item as HTMLElement);
+    });
+  }, []);
   const renderArticle = () => {
     // 文章详情
     return (

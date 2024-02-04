@@ -59,7 +59,7 @@ const SearchPage = () => {
 
   // 处理高亮
   const highLight = (text: string) => {
-    return text.replace(
+    return text?.replace(
       new RegExp(value, "gi"),
       (match) => `<span>${match}</span>`,
     );

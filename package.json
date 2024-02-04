@@ -17,6 +17,7 @@
     "axios": "^0.26.0",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.7",
+    "highlight.js": "^11.9.0",
     "lodash": "^4.17.21",
     "prettier": "^3.2.4",
     "react": "^17.0.2",
