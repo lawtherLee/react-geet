@@ -11,7 +11,7 @@ import { getArticleInfo } from "@/store/actions/article";
 import dayjs from "dayjs";
 import { useInitState } from "@/hooks";
 import "highlight.js/styles/vs2015.css";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import hljs from "highlight.js";
 
 const Article = () => {
@@ -34,10 +34,26 @@ const Article = () => {
       hljs.highlightElement(item as HTMLElement);
     });
   }, []);
+
+  // 头部跟随内容缩放
+  const [isShowHeaderAuth, setIsShowHeaderAuth] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const authorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    wrapperRef.current!.addEventListener("scroll", () => {
+      const rect = authorRef.current!.getBoundingClientRect();
+      if (rect.top < 0) {
+        setIsShowHeaderAuth(true);
+      } else {
+        setIsShowHeaderAuth(false);
+      }
+    });
+  }, []);
   const renderArticle = () => {
     // 文章详情
     return (
-      <div className="wrapper">
+      <div className="wrapper" ref={wrapperRef}>
         <div className="article-wrapper">
           <div className="header">
             <h1 className="title">{articleInfo.title}</h1>
@@ -48,7 +64,7 @@ const Article = () => {
               <span>{articleInfo.comm_count} 评论</span>
             </div>
 
-            <div className="author">
+            <div className="author" ref={authorRef}>
               <img src={articleInfo.aut_photo} alt="" />
               <span className="name">{articleInfo.aut_name}</span>
               <span
@@ -105,15 +121,20 @@ const Article = () => {
             </span>
           }
         >
-          {
+          {isShowHeaderAuth && (
             <div className="nav-author">
-              <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
-              <span className="name">黑马先锋</span>
-              <span className={classNames("follow", true ? "followed" : "")}>
-                {true ? "已关注" : "关注"}
+              <img src={articleInfo.aut_photo} alt="" />
+              <span className="name">{articleInfo.aut_name}</span>
+              <span
+                className={classNames(
+                  "follow",
+                  articleInfo.is_followed ? "followed" : "",
+                )}
+              >
+                {articleInfo.is_followed ? "已关注" : "关注"}
               </span>
             </div>
-          }
+          )}
         </NavBar>
         {/* 文章详情和评论 */}
         {renderArticle()}
