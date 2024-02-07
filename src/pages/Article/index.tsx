@@ -50,6 +50,18 @@ const Article = () => {
       }
     });
   }, []);
+
+  // 控制评论显示位置
+  const commentRef = useRef<HTMLDivElement>(null);
+  const [isComment, setIsComment] = useState(false);
+  const onComment = () => {
+    if (isComment) {
+      wrapperRef.current?.scrollTo(0, 0);
+    } else {
+      wrapperRef.current?.scrollTo(0, commentRef.current?.offsetTop! - 90);
+    }
+    setIsComment(!isComment);
+  };
   const renderArticle = () => {
     // 文章详情
     return (
@@ -95,7 +107,14 @@ const Article = () => {
             <span>20 点赞</span>
           </div>
 
-          <div className="comment-list">
+          <div className="comment-list" ref={commentRef}>
+            <CommentItem />
+            <CommentItem />
+            <CommentItem />
+            <CommentItem />
+            <CommentItem />
+            <CommentItem />
+            <CommentItem />
             <CommentItem />
 
             <InfiniteScroll
@@ -140,7 +159,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter />
+        <CommentFooter onComment={onComment} />
       </div>
     </div>
   );
