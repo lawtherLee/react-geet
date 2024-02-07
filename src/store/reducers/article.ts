@@ -1,11 +1,13 @@
 import { RootAction } from "@/types/store";
-import { ArticleInfo } from "@/types/data";
+import { ArticleInfo, CommentRes } from "@/types/data";
 
 type StateType = {
   articleInfo: ArticleInfo;
+  comments: CommentRes;
 };
 const initState: StateType = {
   articleInfo: {} as ArticleInfo,
+  comments: {} as CommentRes,
 };
 const article = (state = initState, action: RootAction) => {
   switch (action.type) {
@@ -13,6 +15,11 @@ const article = (state = initState, action: RootAction) => {
       return {
         ...state,
         articleInfo: action.payload,
+      };
+    case "article/getComments":
+      return {
+        ...state,
+        comments: action.payload,
       };
     default:
       return state;

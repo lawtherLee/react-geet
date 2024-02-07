@@ -7,12 +7,13 @@ import Icon from "@/components/Icon";
 import CommentItem from "./components/CommentItem";
 import CommentFooter from "./components/CommentFooter";
 import { useDispatch } from "react-redux";
-import { getArticleInfo } from "@/store/actions/article";
+import { getArticleInfo, getComments } from "@/store/actions/article";
 import dayjs from "dayjs";
 import { useInitState } from "@/hooks";
 import "highlight.js/styles/vs2015.css";
 import { useEffect, useRef, useState } from "react";
 import hljs from "highlight.js";
+import { Comment } from "@/types/data";
 
 const Article = () => {
   const history = useHistory();
@@ -62,6 +63,12 @@ const Article = () => {
     }
     setIsComment(!isComment);
   };
+
+  // 获取评论数据
+  const { comments } = useInitState("article", () =>
+    getComments({ type: "a", source: id }),
+  );
+  console.log(comments);
   const renderArticle = () => {
     // 文章详情
     return (
@@ -108,14 +115,9 @@ const Article = () => {
           </div>
 
           <div className="comment-list" ref={commentRef}>
-            <CommentItem />
-            <CommentItem />
-            <CommentItem />
-            <CommentItem />
-            <CommentItem />
-            <CommentItem />
-            <CommentItem />
-            <CommentItem />
+            {(comments.results as Comment[])?.map((item) => {
+              return <CommentItem key={item.com_id} />;
+            })}
 
             <InfiniteScroll
               hasMore={false}

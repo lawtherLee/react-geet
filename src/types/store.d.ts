@@ -1,4 +1,4 @@
-import { ArticleInfo, SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
+import { ArticleInfo, CommentRes, SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
 import { Article, Suggestion } from "./data.d";
 import { Channel, User, UserProfile } from "@/types/data";
 import store from "@/store";
@@ -76,10 +76,15 @@ type SearchAction =
       type: "search/getSearchResults";
       payload: SearchResults[];
     };
-type ArticleAction = {
-  type: "article/getArticleInfo";
-  payload: ArticleInfo;
-};
+type ArticleAction =
+  | {
+      type: "article/getArticleInfo";
+      payload: ArticleInfo;
+    }
+  | {
+      type: "article/getComments";
+      payload: CommentRes;
+    };
 type RootAction =
   | LoginAction
   | ProfileAction
