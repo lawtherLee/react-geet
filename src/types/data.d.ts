@@ -97,6 +97,7 @@ export type Comment = {
   like_count: number;
   pubdate: string;
   read_count: number;
+  reply_count: number;
 };
 
 export type CommentRes = {

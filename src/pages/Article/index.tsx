@@ -110,13 +110,13 @@ const Article = () => {
 
         <div className="comment">
           <div className="comment-header">
-            <span>全部评论（10）</span>
-            <span>20 点赞</span>
+            <span>全部评论（{articleInfo.comm_count}）</span>
+            <span>{articleInfo.like_count} 点赞</span>
           </div>
 
           <div className="comment-list" ref={commentRef}>
             {(comments.results as Comment[])?.map((item) => {
-              return <CommentItem key={item.com_id} />;
+              return <CommentItem comment={item} key={item.com_id} />;
             })}
 
             <InfiniteScroll
@@ -161,7 +161,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter onComment={onComment} />
+        <CommentFooter onComment={onComment} info={articleInfo} />
       </div>
     </div>
   );

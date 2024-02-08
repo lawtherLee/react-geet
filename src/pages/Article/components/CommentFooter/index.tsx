@@ -1,14 +1,16 @@
 import Icon from "@/components/Icon";
 import styles from "./index.module.scss";
+import { ArticleInfo } from "@/types/data";
 
 type Props = {
   // normal 普通评论
   // reply 回复评论
   type?: "normal" | "reply";
   onComment?: () => void;
+  info: ArticleInfo;
 };
 
-const CommentFooter = ({ type = "normal", onComment }: Props) => {
+const CommentFooter = ({ type = "normal", onComment, info }: Props) => {
   return (
     <div className={styles.root}>
       <div className="input-btn">
@@ -21,14 +23,22 @@ const CommentFooter = ({ type = "normal", onComment }: Props) => {
           <div className="action-item" onClick={onComment}>
             <Icon type="iconbtn_comment" />
             <p>评论</p>
-            {!!1 && <span className="bage">{1}</span>}
+            {!!info.comm_count && (
+              <span className="bage">{info.comm_count}</span>
+            )}
           </div>
           <div className="action-item">
-            <Icon type={true ? "iconbtn_like_sel" : "iconbtn_like2"} />
+            <Icon
+              type={info.attitude === 1 ? "iconbtn_like_sel" : "iconbtn_like2"}
+            />
             <p>点赞</p>
           </div>
           <div className="action-item">
-            <Icon type={true ? "iconbtn_collect_sel" : "iconbtn_collect"} />
+            <Icon
+              type={
+                info.is_collected ? "iconbtn_collect_sel" : "iconbtn_collect"
+              }
+            />
             <p>收藏</p>
           </div>
         </>
