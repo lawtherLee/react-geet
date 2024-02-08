@@ -1,6 +1,8 @@
 import Icon from "@/components/Icon";
 import styles from "./index.module.scss";
 import { ArticleInfo } from "@/types/data";
+import { useDispatch } from "react-redux";
+import { editLikeStatus } from "@/store/actions/article";
 
 type Props = {
   // normal 普通评论
@@ -11,6 +13,11 @@ type Props = {
 };
 
 const CommentFooter = ({ type = "normal", onComment, info }: Props) => {
+  const dispatch = useDispatch();
+  // 点击赞
+  const onClickLike = () => {
+    dispatch(editLikeStatus(info.art_id, info.attitude));
+  };
   return (
     <div className={styles.root}>
       <div className="input-btn">
@@ -27,7 +34,7 @@ const CommentFooter = ({ type = "normal", onComment, info }: Props) => {
               <span className="bage">{info.comm_count}</span>
             )}
           </div>
-          <div className="action-item">
+          <div className="action-item" onClick={() => onClickLike()}>
             <Icon
               type={info.attitude === 1 ? "iconbtn_like_sel" : "iconbtn_like2"}
             />

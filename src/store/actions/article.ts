@@ -25,3 +25,17 @@ export const getComments = (params: {
     });
   };
 };
+
+export const editLikeStatus = (
+  id: string,
+  attitude: number,
+): RootThunkAction => {
+  return async (dispatch) => {
+    if (attitude === 1) {
+      await request.delete("article/likings/" + id);
+    } else {
+      await request.post("article/likings", { target: id });
+    }
+    dispatch(getArticleInfo(id));
+  };
+};
