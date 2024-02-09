@@ -1,9 +1,8 @@
-import { ArticleInfo, CommentRes, SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
+import { ArticleInfo, Comment, CommentRes, SearchResults, Token } from "./data"; // 存 所有redux相关的数据类型
 import { Article, Suggestion } from "./data.d";
 import { Channel, User, UserProfile } from "@/types/data";
 import store from "@/store";
 import { ThunkAction } from "redux-thunk"; // 存 所有redux相关的数据类型
-
 // 存 所有redux相关的数据类型
 
 // 登录的action
@@ -84,6 +83,10 @@ type ArticleAction =
   | {
       type: "article/getComments";
       payload: CommentRes;
+    }
+  | {
+      type: "article/addComment";
+      payload: Comment;
     };
 type RootAction =
   | LoginAction

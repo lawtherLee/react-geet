@@ -21,6 +21,14 @@ const article = (state = initState, action: RootAction) => {
         ...state,
         comments: action.payload,
       };
+    case "article/addComment":
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          results: [action.payload, ...state.comments.results],
+        },
+      };
     default:
       return state;
   }

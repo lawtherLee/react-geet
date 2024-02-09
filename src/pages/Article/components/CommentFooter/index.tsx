@@ -10,9 +10,10 @@ type Props = {
   type?: "normal" | "reply";
   onComment?: () => void;
   info: ArticleInfo;
+  onShow: () => void;
 };
 
-const CommentFooter = ({ type = "normal", onComment, info }: Props) => {
+const CommentFooter = ({ type = "normal", onComment, info, onShow }: Props) => {
   const dispatch = useDispatch();
   // 点击赞
   const onClickLike = () => {
@@ -20,7 +21,7 @@ const CommentFooter = ({ type = "normal", onComment, info }: Props) => {
   };
   return (
     <div className={styles.root}>
-      <div className="input-btn">
+      <div className="input-btn" onClick={onShow}>
         <Icon type="iconbianji" />
         <span>抢沙发</span>
       </div>

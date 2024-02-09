@@ -39,3 +39,20 @@ export const editLikeStatus = (
     dispatch(getArticleInfo(id));
   };
 };
+
+export const addComment = (
+  target: string,
+  content: string,
+): RootThunkAction => {
+  return async (dispatch) => {
+    const res = await request.post("comments", {
+      target,
+      content,
+    });
+    dispatch({
+      type: "article/addComment",
+      payload: res.data.new_obj,
+    });
+    getComments({ type: "a", source: target });
+  };
+};

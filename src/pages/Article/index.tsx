@@ -1,4 +1,4 @@
-import { InfiniteScroll, NavBar } from "antd-mobile";
+import { NavBar, Popup, Toast } from "antd-mobile";
 import { useHistory, useParams } from "react-router-dom";
 import classNames from "classnames";
 import styles from "./index.module.scss";
@@ -7,13 +7,18 @@ import Icon from "@/components/Icon";
 import CommentItem from "./components/CommentItem";
 import CommentFooter from "./components/CommentFooter";
 import { useDispatch } from "react-redux";
-import { getArticleInfo, getComments } from "@/store/actions/article";
+import {
+  addComment,
+  getArticleInfo,
+  getComments,
+} from "@/store/actions/article";
 import dayjs from "dayjs";
 import { useInitState } from "@/hooks";
 import "highlight.js/styles/vs2015.css";
 import { useEffect, useRef, useState } from "react";
 import hljs from "highlight.js";
 import { Comment } from "@/types/data";
+import CommentInput from "@/pages/Article/components/CommentInput";
 
 const Article = () => {
   const history = useHistory();
@@ -68,7 +73,22 @@ const Article = () => {
   const { comments } = useInitState("article", () =>
     getComments({ type: "a", source: id }),
   );
-  console.log(comments);
+
+  // 评论弹层
+  const [commentPopup, setCommentPopup] = useState(false);
+  const showCommentPopup = () => {
+    setCommentPopup(true);
+  };
+  const hideCommentPopup = () => {
+    setCommentPopup(false);
+  };
+
+  const onAddComment = async (value: string) => {
+    if (value.trim() === "") return;
+    await dispatch(addComment(id, value));
+    hideCommentPopup();
+    Toast.show("评论成功");
+  };
   const renderArticle = () => {
     // 文章详情
     return (
@@ -118,15 +138,21 @@ const Article = () => {
             {(comments.results as Comment[])?.map((item) => {
               return <CommentItem comment={item} key={item.com_id} />;
             })}
-
-            <InfiniteScroll
-              hasMore={false}
-              loadMore={async () => {
-                console.log(1);
-              }}
-            />
           </div>
         </div>
+
+        {/*评论弹层*/}
+        <Popup
+          visible={commentPopup}
+          bodyStyle={{ height: "100vh" }}
+          destroyOnClose
+        >
+          <CommentInput
+            onSubmit={onAddComment}
+            onClose={hideCommentPopup}
+            name={"啊"}
+          />
+        </Popup>
       </div>
     );
   };
@@ -161,7 +187,11 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter onComment={onComment} info={articleInfo} />
+        <CommentFooter
+          onShow={showCommentPopup}
+          onComment={onComment}
+          info={articleInfo}
+        />
       </div>
     </div>
   );
